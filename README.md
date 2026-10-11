@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 বাজার দর (BazarDor) — প্রতিদিনের সঠিক বাজারদর এক নজরে
 
-## Getting Started
+একটি আধুনিক, দ্রুতগতির এবং নির্ভরযোগ্য ওয়েব অ্যাপ্লিকেশন যা বাংলাদেশের সকল নিত্যপ্রয়োজনীয় পণ্যের পাইকারি ও খুচরা বাজারদর রিয়েল-টাইমে প্রদর্শন করে। ভোক্তারা যাতে সঠিক মূল্যে পণ্য ক্রয় করতে পারেন এবং কৃত্রিম সংকট বা অতিরিক্ত মূল্যের হাত থেকে বাঁচতে পারেন, সেই লক্ষ্যে এই প্ল্যাটফর্মটি তৈরি করা হয়েছে।
 
-First, run the development server:
+---
 
+## 🌟 প্রজেক্টের মূল বৈশিষ্ট্যসমূহ (Key Features)
+
+1. **চলমান বাজারদর টিকার (Real-Time Price Ticker Marquee):**  
+   ন্যাভবারের ঠিক নিচে একটি মসৃণ ইনফিনিট স্ক্রলিং টিকার সার্বক্ষণিকভাবে দেশের গুরুত্বপূর্ণ নিত্যপণ্যের বর্তমান মূল্য এবং মূল্য পরিবর্তনের দিক (বৃদ্ধি ▲ বা হ্রাস ▼) প্রদর্শন করে।
+
+2. **মূল্য ওঠানামা ট্র্যাকিং (Price Risers & Fallers Breakdown):**  
+   গতকালের তুলনায় যেসব পণ্যের দাম বেড়েছে (আজ দাম বেড়েছে ▲) এবং যেসব পণ্যের দাম কমেছে (আজ দাম কমেছে ▼), তাদের শীর্ষ তালিকা হোম পেজেই আকর্ষণীয় ভিজ্যুয়াল ব্যাজ সহ প্রদর্শিত হয়।
+
+3. **সংখ্যাগত মানের ভিত্তিতে নিখুঁত সর্টিং (Numeric Price Sorting - C1):**  
+   ক্যাটাগরি পেজে ব্যবহারকারীরা পণ্যের দাম অনুযায়ী "ডিফল্ট", "দাম: কম থেকে বেশি" এবং "দাম: বেশি থেকে কম" ক্রমে পণ্য সাজাতে পারেন। এটি বাংলা সংখ্যার স্ট্রিং নয়, বরং প্রকৃত সংখ্যাগত মানের (Numeric Value) ভিত্তিতে নির্ভুলভাবে কাজ করে।
+
+4. **বাজারভিত্তিক বিস্তারিত দর ও বিশ্লেষণ (Market-wise Price Matrix):**  
+   প্রতিটি পণ্যের একক পৃষ্ঠায় দেশের ৮টি বিভাগের (ঢাকা, চট্টগ্রাম, রাজশাহী, খুলনা, সিলেট, ইত্যাদি) বিভিন্ন কাঁচাবাজারের সর্বনিম্ন, সর্বোচ্চ এবং গড় মূল্যের বিস্তারিত তুলনামূলক তালিকা ও চার্ট সংরক্ষিত থাকে।
+
+5. **নিরাপদ অথেনটিকেশন ও প্রোফাইল ব্যবস্থাপনা (Authentication & User Profile - C3):**  
+   ইমেইল/পাসওয়ার্ড ও গুগল সোশ্যাল লগইনের সুবিধা। অননুমোদিত ব্যবহারকারীদের জন্য সংরক্ষিত পৃষ্ঠা সুরক্ষিত রাখার ব্যবস্থা এবং প্রোফাইল থেকে সহজেই ব্যবহারকারীর নাম ও তথ্য আপডেট করার ফিচার।
+
+---
+
+## 🛠️ ব্যবহৃত প্রযুক্তিসমূহ (Technologies Used)
+
+* **ফ্রন্টএন্ড ফ্রেমওয়ার্ক:** Next.js 16 (App Router)
+* **ইউজার ইন্টারফেস:** React 19
+* **স্টাইলিং:** Tailwind CSS v4, DaisyUI v5
+* **আইকন লাইব্রেরি:** React Icons (Feather Icons, FontAwesome)
+* **টাইপোগ্রাফি:** Google Fonts (Hind Siliguri — সুনির্দিষ্ট বাংলা ফন্ট)
+* **অথেনটিকেশন:** Firebase Auth / BetterAuth Client Standard
+* **নোটিফিকেশন:** React Hot Toast
+* **ডেটা সোর্স:** Programming Hero OpenAPI (Bazardor API)
+
+---
+
+## 🚀 কীভাবে লোকালি রান করবেন (Getting Started)
+
+### ১. ক্লোন ও ফোল্ডারে প্রবেশ:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/itznishan3301/Bazar-Dor.git
+cd Bazar-Dor
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ২. ডিপেন্ডেন্সি ইন্সটল করুন:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### ৩. ডেভেলপমেন্ট সার্ভার চালু করুন:
+```bash
+npm run dev
+```
+ব্রাউজারে [http://localhost:3000](http://localhost:3000) ওপেন করে প্রজেক্টটি দেখুন।
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ৪. প্রোডাকশন বিল্ড তৈরি করুন:
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📂 ফোল্ডার স্ট্রাকচার (Folder Structure)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+assignment/
+├── app/
+│   ├── category/
+│   │   └── [slug]/
+│   │       └── page.js          # ক্যাটাগরি পেজ ও সর্টিং
+│   ├── components/
+│   │   ├── Footer.js            # ফুটার কম্পোনেন্ট
+│   │   ├── Hero.js              # হিরো ব্যানার ও স্মুথ স্ক্রল CTA
+│   │   ├── HomeProducts.js      # হোম পেজের রিসার্স, ফলার্স ও পণ্য গ্রিড
+│   │   ├── Navbar.js            # ন্যাভবার, বাংলা তারিখ ও ক্যাটাগরি মেনু
+│   │   ├── PriceTicker.js       # চলমান মূল্য টিকার
+│   │   ├── PrivateRoute.js      # সুরক্ষিত রুট র‍্যাপার
+│   │   ├── ProductCard.js       # পণ্য কার্ড ও ব্যাজ
+│   │   └── ProductSkeleton.js   # লোডিং স্কেলিটন এনিমেশন
+│   ├── context/
+│   │   └── AuthContext.js       # অথেনটিকেশন স্টেট প্রোভাইডার
+│   ├── lib/
+│   │   ├── api.js               # রিয়েলটাইম API ফেচার
+│   │   ├── firebase.config.js   # অথেনটিকেশন কনফিগ
+│   │   └── utils.js             # বাংলা সংখ্যা, তারিখ ও প্রাইস হেল্পার
+│   ├── product/
+│   │   └── [slug]/
+│   │       └── page.js          # বিস্তারিত বাজারভিত্তিক পণ্য বিবরণ
+│   ├── profile/
+│   │   ├── page.js              # ব্যবহারকারীর প্রোফাইল
+│   │   └── update/
+│   │       └── page.js          # তথ্য আপডেট পেজ (C3)
+│   ├── signin/
+│   │   └── page.js              # লগইন পেজ ও গুগল অথ
+│   ├── signup/
+│   │   └── page.js              # নতুন একাউন্ট নিবন্ধন পেজ
+│   ├── globals.css              # গ্লোবাল সিএসএস ও থিম টোকেন
+│   ├── layout.js                # রুট লেআউট ও টোস্টার
+│   ├── not-found.js             # ফ্রেন্ডলি ৪০৪ এরর পেজ
+│   └── page.js                  # মূল হোম পেজ
+├── public/
+│   ├── bazar-hero.png           # হিরো ব্যানার চিত্র
+│   └── logo-icon.png            # বাজার দর লোগো
+├── next.config.mjs              # নেক্সট.জেএস কনফিগারেশন
+└── package.json
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 লাইসেন্স ও কপিরাইট
+© ২০২৬ বাজার দর। সর্বস্বত্ব সংরক্ষিত।
+প্রয়োজনীয় পণ্যের সঠিক দাম এক নজরে।

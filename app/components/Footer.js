@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Footer() {
@@ -24,7 +26,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-600 mt-6 pt-4 text-center">
           <p className="text-xs text-gray-400">
-            © {new Date().getFullYear()} বাজার দর। সকল অধিকার সংরক্ষিত।
+            © ২০২৬ বাজার দর। সকল অধিকার সংরক্ষিত।
           </p>
         </div>
       </div>
