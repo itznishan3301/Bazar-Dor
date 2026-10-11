@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
 
 export const metadata = {
   title: "বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে",
@@ -23,16 +24,18 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              fontFamily: "Hind Siliguri, sans-serif",
-            },
-          }}
-        />
-        {children}
+        <AuthProvider>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                fontFamily: "Hind Siliguri, sans-serif",
+              },
+            }}
+          />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
