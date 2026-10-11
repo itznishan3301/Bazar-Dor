@@ -14,13 +14,30 @@ export async function POST(request) {
 
     const db = await getDatabase();
     const usersCollection = db.collection("users");
+    const userCollection = db.collection("user");
 
     const normalizedEmail = email.trim().toLowerCase();
-    const result = await usersCollection.updateOne(
+    const trimmedName = displayName.trim();
+
+    // 1. Update custom credentials collection ('users')
+    await usersCollection.updateOne(
       { email: normalizedEmail },
       {
         $set: {
-          displayName: displayName.trim(),
+          displayName: trimmedName,
+          name: trimmedName,
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    // 2. Update BetterAuth OAuth collection ('user')
+    await userCollection.updateOne(
+      { email: normalizedEmail },
+      {
+        $set: {
+          name: trimmedName,
+          displayName: trimmedName,
           updatedAt: new Date(),
         },
       }
@@ -31,7 +48,8 @@ export async function POST(request) {
       message: "তথ্য সফলভাবে আপডেট হয়েছে",
       user: {
         email: normalizedEmail,
-        displayName: displayName.trim(),
+        displayName: trimmedName,
+        name: trimmedName,
       },
     });
   } catch (err) {

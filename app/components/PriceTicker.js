@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllProducts } from "@/app/lib/api";
-import { formatPrice, toBanglaNumber } from "@/app/lib/utils";
+import { formatPrice, toBanglaNumber, getUnitBangla } from "@/app/lib/utils";
 
 export default function PriceTicker() {
   const [products, setProducts] = useState([]);
@@ -37,6 +37,9 @@ export default function PriceTicker() {
             : isDown
             ? "text-red-400"
             : "text-gray-400";
+          const unitText = product.unit
+            ? getUnitBangla(product.unit).replace("প্রতি ", "")
+            : "কেজি";
 
           return (
             <span
@@ -46,7 +49,7 @@ export default function PriceTicker() {
               <span>{product.image}</span>
               <span className="font-medium">{product.nameBn}</span>
               <span className="text-gray-300">
-                {formatPrice(product.today)} টাকা
+                {formatPrice(product.today)} টাকা/{unitText}
               </span>
               <span className={`${color} font-semibold`}>
                 {arrow} {pct}%

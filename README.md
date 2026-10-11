@@ -32,9 +32,9 @@ A modern, high-performance, and responsive web application designed to track and
    - Historical comparative strip reviewing prices from today, yesterday, last week, and last month.
 
 5. **Secure Authentication & Profile Information Update (Challenge C3):**
-   - Complete authentication flow supporting Email/Password and one-click Google Social Authentication.
-   - Protected route guards ensuring single product analysis pages are securely accessed by authenticated users.
-   - Profile management dashboard (`/profile`) paired with a dedicated information update workflow (`/profile/update`) allowing users to seamlessly edit their profile name.
+   - Complete authentication flow supporting Email/Password, one-click Google OAuth, and GitHub OAuth powered by **BetterAuth** and **MongoDB Atlas**.
+   - Protected route guards ensuring single product analysis pages are securely accessed by authenticated users with intelligent redirect preservation.
+   - Profile management dashboard (`/profile`) paired with a dedicated information update workflow (`/profile/update`) allowing users to seamlessly edit their profile name synchronized across cloud database collections.
 
 6. **Responsive Design & UX Polish:**
    - Fluid responsiveness optimized across mobile, tablet, and desktop viewports.
@@ -51,11 +51,12 @@ A modern, high-performance, and responsive web application designed to track and
 | **React 19** | Component-driven UI library |
 | **Tailwind CSS v4** | Utility-first responsive styling engine |
 | **DaisyUI v5** | Accessible, pre-styled semantic component primitives |
-| **Firebase Auth** | Client authentication state management & Google OAuth provider |
+| **BetterAuth** | Comprehensive authentication engine with OAuth (Google & GitHub) and Session handling |
+| **MongoDB Atlas** | Cloud NoSQL database for persistent user accounts and profile synchronization |
 | **React Hot Toast** | Lightweight, animated toast notifications for user actions |
 | **React Icons** | Feather & FontAwesome icon set |
 | **Google Fonts (Hind Siliguri)** | Polished Bengali typography support |
-| **Programming Hero OpenAPI** | RESTful endpoint delivering real-time commodity data |
+| **Programming Hero OpenAPI** | RESTful endpoint delivering real-time commodity data with multi-URL fallback |
 
 ---
 
@@ -64,6 +65,16 @@ A modern, high-performance, and responsive web application designed to track and
 ```text
 assignment/
 ├── app/
+│   ├── api/
+│   │   └── auth/
+│   │       ├── [...all]/
+│   │       │   └── route.js     # BetterAuth route handler (OAuth endpoints)
+│   │       ├── login/
+│   │       │   └── route.js     # Credentials login endpoint with bcrypt verification
+│   │       ├── register/
+│   │       │   └── route.js     # User registration endpoint with MongoDB storage
+│   │       └── update/
+│   │           └── route.js     # Profile name update endpoint with MongoDB sync (C3)
 │   ├── category/
 │   │   └── [slug]/
 │   │       └── page.js          # Dynamic category view with numeric sorting (C1)
@@ -73,14 +84,16 @@ assignment/
 │   │   ├── HomeProducts.js      # Sections A, B, and C with category chips
 │   │   ├── Navbar.js            # Sticky navbar with Bengali date & category links
 │   │   ├── PriceTicker.js       # Infinite scrolling price marquee
-│   │   ├── PrivateRoute.js      # Protected route client wrapper
+│   │   ├── PrivateRoute.js      # Protected route client wrapper with redirect memory
 │   │   ├── ProductCard.js       # Reusable commodity card with badge indicators
 │   │   └── ProductSkeleton.js   # Animated skeleton loading grid
 │   ├── context/
-│   │   └── AuthContext.js       # Authentication state context provider
+│   │   └── AuthContext.js       # Authentication state context provider (BetterAuth + Custom)
 │   ├── lib/
-│   │   ├── api.js               # Data fetcher utilities connecting to OpenAPI
-│   │   ├── firebase.config.js   # Client authentication configuration
+│   │   ├── api.js               # Data fetcher utilities with multi-endpoint fallback
+│   │   ├── auth.js              # BetterAuth server-side instance & MongoDB adapter
+│   │   ├── auth-client.js       # BetterAuth client instance
+│   │   ├── mongodb.js           # MongoDB connection client helper
 │   │   └── utils.js             # Bengali numeral, date, unit, & badge formatters
 │   ├── product/
 │   │   └── [slug]/
@@ -90,7 +103,7 @@ assignment/
 │   │   └── update/
 │   │       └── page.js          # Profile name update route (C3)
 │   ├── signin/
-│   │   └── page.js              # Sign In page with email & Google authentication
+│   │   └── page.js              # Sign In page with email, Google & GitHub OAuth
 │   ├── signup/
 │   │   └── page.js              # Sign Up registration page with validation
 │   ├── globals.css              # Design tokens, keyframe animations, & utilities
@@ -120,13 +133,29 @@ cd Bazar-Dor
 npm install
 ```
 
-### 3. Start development server
+### 3. Configure Environment Variables
+Create a `.env` file in the project root:
+```env
+MONGODB_URI=your_mongodb_connection_string
+BETTER_AUTH_SECRET=your_auth_secret
+BETTER_AUTH_URL=http://localhost:3000
+
+# Google OAuth Credentials
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# GitHub OAuth Credentials
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
+
+### 4. Start development server
 ```bash
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-### 4. Build for production
+### 5. Build for production
 ```bash
 npm run build
 npm run start
@@ -134,9 +163,13 @@ npm run start
 
 ---
 
-## 🌐 API Endpoints Utilized
+## 🌐 API Endpoints & Resilience
 
-- **Base Endpoint:** `https://openapi.programming-hero.com/api/bazardor`
+The application connects to the primary endpoint with automated multi-URL fallback redundancy:
+- **Primary Endpoint:** `https://openapi.programming-hero.com/api/bazardor`
+- **Fallback Endpoint 1:** `https://api.api-store.workers.dev/api/bazardor`
+- **Fallback Endpoint 2:** `https://api.abcz.workers.dev/api/bazardor`
+
 - **All Commodities:** `/products`
 - **Category Filter:** `/products?category={category_slug}`
 - **Single Product Details:** `/products/{id}`
