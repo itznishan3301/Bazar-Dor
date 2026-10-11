@@ -47,19 +47,19 @@ export default function SignInPage() {
   };
 
 
-  // গুগল দিয়ে সোশ্যাল লগইন
+  // গুগল দিয়ে সোশ্যাল লগইন (সরাসরি গুগল একাউন্ট চুজারে রিডাইরেক্ট করবে)
   const handleGoogleLogin = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
       await loginWithGoogle();
-      toast.success("গুগল দিয়ে সফলভাবে লগইন হয়েছে!");
-      router.push("/");
+      // ব্রাউজার স্বয়ংক্রিয়ভাবে গুগলের একাউন্ট সিলেকশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গুগল লগইন এরর:", err);
-      setErrorMessage("গুগল দিয়ে সাইন ইন করা সম্ভব হয়নি।");
-      toast.error("গুগল সাইন ইন ব্যর্থ হয়েছে");
-    } finally {
+      setErrorMessage(
+        "গুগল একাউন্টে সংযোগ করা সম্ভব হয়নি। Google Cloud Console-এ Authorized redirect URI (http://localhost:3000/api/auth/callback/google) যুক্ত আছে কিনা যাচাই করুন।"
+      );
+      toast.error("গুগল সাইন ইন সংযোগ ব্যর্থ হয়েছে");
       setSubmitting(false);
     }
   };

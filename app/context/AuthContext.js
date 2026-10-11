@@ -9,23 +9,55 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ব্রাউজার লোড হলে বিদ্যমান সেশন পুনরুদ্ধার
+  // ব্রাউজার লোড হলে বিদ্যমান সেশন পুনরুদ্ধার (লোকাল স্টোরেজ ও BetterAuth Google OAuth)
   useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        const savedSession = localStorage.getItem("bazardor_active_session");
-        if (savedSession) {
-          setUser(JSON.parse(savedSession));
+    let isMounted = true;
+    async function restoreSession() {
+      try {
+        // ১. লোকাল স্টোরেজ থেকে বিদ্যমান সেশন চেক
+        if (typeof window !== "undefined") {
+          const savedSession = localStorage.getItem("bazardor_active_session");
+          if (savedSession) {
+            setUser(JSON.parse(savedSession));
+          }
+        }
+
+        // ২. BetterAuth সেশন চেক (Google OAuth রিডাইরেক্টের পর)
+        if (authClient?.getSession) {
+          const sessionRes = await authClient.getSession();
+          if (sessionRes?.data?.user && isMounted) {
+            const u = sessionRes.data.user;
+            const sessionData = {
+              uid: u.id,
+              displayName: u.name || u.email.split("@")[0],
+              email: u.email,
+              photoURL: u.image || null,
+            };
+            setUser(sessionData);
+            if (typeof window !== "undefined") {
+              localStorage.setItem(
+                "bazardor_active_session",
+                JSON.stringify(sessionData)
+              );
+            }
+          }
+        }
+      } catch (e) {
+        console.error("সেশন লোড ব্যর্থ:", e);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
         }
       }
-    } catch (e) {
-      console.error("সেশন লোড ব্যর্থ:", e);
-    } finally {
-      setLoading(false);
     }
+
+    restoreSession();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // ইউজার রেজিস্ট্রেশন (MongoDB-তে সেভ হবে)
+  // ইউজার রেজিস্ট্রেশন (MongoDB-তে সেভ হবে এবং সাথে সাথে অটো-লগইন হবে)
   const registerUser = async (email, password, name = "") => {
     setLoading(true);
     try {
@@ -45,7 +77,17 @@ export function AuthProvider({ children }) {
         throw error;
       }
 
-      return data.user;
+      // রেজিস্ট্রেশনের সাথে সাথেই সেশন স্টোরেজে সংরক্ষণ ও স্টেট আপডেট (অটো-লগইন)
+      const sessionData = data.user;
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "bazardor_active_session",
+          JSON.stringify(sessionData)
+        );
+      }
+      setUser(sessionData);
+
+      return sessionData;
     } finally {
       setLoading(false);
     }
@@ -81,58 +123,24 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // গুগল দিয়ে সোশ্যাল লগইন (BetterAuth Google OAuth)
+  // গুগল দিয়ে সোশ্যাল লগইন (BetterAuth Google OAuth সরাসরি একাউন্ট চুজারে রিডাইরেক্ট)
   const loginWithGoogle = async () => {
     setLoading(true);
     try {
-      // BetterAuth official social signIn
       if (authClient?.signIn?.social) {
-        await authClient.signIn.social({
+        const res = await authClient.signIn.social({
           provider: "google",
           callbackURL: "/",
         });
-        return;
+        if (res?.data?.url) {
+          window.location.href = res.data.url;
+        }
+        return res;
       }
-
-      // ফলব্যাক API
-      const res = await fetch("/api/auth/social", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          provider: "google",
-          displayName: "গুগল ব্যবহারকারী",
-          email: "user.google@gmail.com",
-        }),
-      });
-
-      const data = await res.json();
-      const sessionData = data.user;
-
-      localStorage.setItem(
-        "bazardor_active_session",
-        JSON.stringify(sessionData)
-      );
-      setUser(sessionData);
-      return sessionData;
+      throw new Error("BetterAuth client পাওয়া যায়নি");
     } catch (err) {
-      console.warn("গুগল অথেনটিকেশন ফলব্যাক কল:", err);
-      const res = await fetch("/api/auth/social", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          provider: "google",
-          displayName: "গুগল ব্যবহারকারী",
-          email: "user.google@gmail.com",
-        }),
-      });
-      const data = await res.json();
-      const sessionData = data.user;
-      localStorage.setItem(
-        "bazardor_active_session",
-        JSON.stringify(sessionData)
-      );
-      setUser(sessionData);
-      return sessionData;
+      console.error("গুগল অথেনটিকেশন এরর:", err);
+      throw err;
     } finally {
       setLoading(false);
     }

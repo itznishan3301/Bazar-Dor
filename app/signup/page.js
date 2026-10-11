@@ -40,21 +40,22 @@ export default function SignUpPage() {
 
     try {
       setSubmitting(true);
-      // একাউন্ট তৈরি ও নাম সংরক্ষণ
+      // একাউন্ট তৈরি ও সাথে সাথে অটো-লগইন (MongoDB + Active Session)
       await registerUser(email, password, name);
 
-      toast.success("রেজিস্ট্রেশন সফল হয়েছে! অনুগ্রহ করে লগইন করুন।");
-      // রিকোয়ারমেন্ট: রেজিস্ট্রেশন সফল হলে লগইন পেজে নেভিগেট
-      router.push("/signin");
+      toast.success("রেজিস্ট্রেশন ও লগইন সফল হয়েছে! স্বাগতম।");
+      router.push("/");
     } catch (err) {
       console.error("রেজিস্ট্রেশন এরর:", err);
       let msg = "রেজিস্ট্রেশন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
-      if (err.code === "auth/email-already-in-use") {
-        msg = "এই ইমেইল দিয়ে ইতিমধ্যে একটি একাউন্ট রয়েছে।";
+      if (err.code === "auth/email-already-in-use" || err.message?.includes("ইতিমধ্যে")) {
+        msg = "এই ইমেইল দিয়ে ইতিমধ্যে একটি একাউন্ট রয়েছে। দয়া করে লগইন করুন।";
       } else if (err.code === "auth/invalid-email") {
         msg = "প্রদত্ত ইমেইল এড্রেসটি সঠিক নয়।";
       } else if (err.code === "auth/weak-password") {
         msg = "পাসওয়ার্ডটি খুব দুর্বল। আরও শক্তিশালী পাসওয়ার্ড দিন।";
+      } else if (err.message) {
+        msg = err.message;
       }
       setErrorMessage(msg);
       toast.error(msg);
@@ -63,19 +64,19 @@ export default function SignUpPage() {
     }
   };
 
-  // সোশ্যাল গুগল রেজিস্ট্রেশন/লগইন
+  // সোশ্যাল গুগল রেজিস্ট্রেশন/লগইন (BetterAuth দিয়ে সরাসরি গুগলে একাউন্ট চুজারে নিয়ে যাবে)
   const handleGoogleAuth = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
+      // সরাসরি Google OAuth একাউন্ট সিলেকশন স্ক্রিনে রিডাইরেক্ট
       await loginWithGoogle();
-      toast.success("গুগল দিয়ে সফলভাবে সংযুক্ত হয়েছেন!");
-      router.push("/");
     } catch (err) {
-      console.error("গুগল এরর:", err);
-      setErrorMessage("গুগল দিয়ে সংযোগ স্থাপন করা সম্ভব হয়নি।");
-      toast.error("গুগল অথেনটিকেশন ব্যর্থ হয়েছে");
-    } finally {
+      console.error("গুগল রিডাইরেক্ট এরর:", err);
+      setErrorMessage(
+        "গুগল সার্ভারে রিডাইরেক্ট করা সম্ভব হয়নি। Google Cloud Console-এ Authorized redirect URI (http://localhost:3000/api/auth/callback/google) যুক্ত আছে কিনা যাচাই করুন।"
+      );
+      toast.error("গুগল সংযোগে সমস্যা হয়েছে");
       setSubmitting(false);
     }
   };
@@ -209,7 +210,7 @@ export default function SignUpPage() {
               className="btn btn-outline w-full rounded-xl border-slate-300 hover:bg-slate-50 hover:border-slate-400 text-slate-700 flex items-center justify-center gap-2 text-sm font-semibold"
             >
               <FcGoogle className="text-xl" />
-              <span>গুগল দিয়ে দ্রুত একাউন্ট খুলুন</span>
+              <span>গুগল দিয়ে সরাসরি একাউন্ট খুলুন</span>
             </button>
 
             <button
