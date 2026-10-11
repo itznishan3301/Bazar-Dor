@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "better-auth": "^1.7.7",
     "daisyui": "^5.7.47",
     "firebase": "^13.0.0",
     "mongodb": "^7.7.0",
