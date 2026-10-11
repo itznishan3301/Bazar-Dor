@@ -7,7 +7,7 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { useAuth } from "@/app/context/AuthContext";
 import toast from "react-hot-toast";
-import { FiMail, FiLock, FiArrowRight, FiKey } from "react-icons/fi";
+import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
@@ -46,22 +46,6 @@ export default function SignInPage() {
     }
   };
 
-  // ডেমো একাউন্টে ১-ক্লিক কুইক লগইন
-  const handleQuickDemoLogin = async () => {
-    try {
-      setSubmitting(true);
-      setErrorMessage("");
-      setEmail("demo@bazardor.com");
-      setPassword("password123");
-      await loginUser("demo@bazardor.com", "password123");
-      toast.success("ডেমো একাউন্টে সফলভাবে প্রবেশ করেছেন!");
-      router.push("/");
-    } catch (err) {
-      toast.error("ডেমো লগইন ব্যর্থ হয়েছে");
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   // গুগল দিয়ে সোশ্যাল লগইন
   const handleGoogleLogin = async () => {
@@ -116,24 +100,6 @@ export default function SignInPage() {
             </p>
           </div>
 
-          {/* ১-ক্লিক ডেমো লগইন বক্স (পরীক্ষকের জন্য সহজ ব্যবস্থা) */}
-          <div className="bg-blue-50/80 border border-blue-200/90 rounded-2xl p-3.5 text-center">
-            <p className="text-xs text-blue-900 font-semibold mb-2">
-              দ্রুত টেস্ট করতে চান?
-            </p>
-            <button
-              type="button"
-              onClick={handleQuickDemoLogin}
-              disabled={submitting}
-              className="btn btn-sm btn-primary w-full rounded-xl text-white font-bold flex items-center justify-center gap-1.5 shadow-sm"
-            >
-              <FiKey />
-              <span>১-ক্লিকে ডেমো লগইন করুন</span>
-            </button>
-            <p className="text-[11px] text-slate-500 mt-1.5">
-              ইমেইল: <span className="font-mono text-slate-700">demo@bazardor.com</span> | পাসওয়ার্ড: <span className="font-mono text-slate-700">password123</span>
-            </p>
-          </div>
 
           {/* এরর মেসেজ অ্যালার্ট */}
           {errorMessage && (
