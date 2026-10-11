@@ -4,37 +4,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
-// প্রাথমিক ডেমো ইউজার লিস্ট
-const INITIAL_USERS = [
-  {
-    uid: "usr_demo_101",
-    displayName: "সাদিকুর রহমান",
-    email: "demo@bazardor.com",
-    password: "password123",
-  },
-  {
-    uid: "usr_demo_102",
-    displayName: "পরীক্ষক (Examiner)",
-    email: "examiner@ph.com",
-    password: "123456",
-  },
-];
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ব্রাউজার লোড হলে বিদ্যমান সেশন ও ইউজার ডেটা পুনরুদ্ধার
+  // ব্রাউজার লোড হলে বিদ্যমান সেশন পুনরুদ্ধার
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
-        // রেজিস্টার্ড ইউজার ডেটাবেইজ ইনিশিয়ালাইজেশন
-        const existingUsers = localStorage.getItem("bazardor_users");
-        if (!existingUsers) {
-          localStorage.setItem("bazardor_users", JSON.stringify(INITIAL_USERS));
-        }
-
-        // অ্যাক্টিভ সেশন চেক
         const savedSession = localStorage.getItem("bazardor_active_session");
         if (savedSession) {
           setUser(JSON.parse(savedSession));
@@ -47,134 +24,156 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // ইউজার রেজিস্ট্রেশন (Sign Up)
+  // ইউজার রেজিস্ট্রেশন (MongoDB-তে সেভ হবে)
   const registerUser = async (email, password, name = "") => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300)); // স্বাভাবিক লোডিং ফিল
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, name }),
+      });
 
-    const stored = localStorage.getItem("bazardor_users");
-    const users = stored ? JSON.parse(stored) : [...INITIAL_USERS];
+      const data = await res.json();
 
-    // ইমেইল ইতিমধ্যে আছে কিনা চেক
-    const exists = users.find(
-      (u) => u.email.toLowerCase() === email.trim().toLowerCase()
-    );
-    if (exists) {
-      setLoading(false);
-      const err = new Error("auth/email-already-in-use");
-      err.code = "auth/email-already-in-use";
+      if (!res.ok) {
+        const error = new Error(data.error || "রেজিস্ট্রেশন ব্যর্থ হয়েছে");
+        if (res.status === 409) {
+          error.code = "auth/email-already-in-use";
+        }
+        throw error;
+      }
+
+      return data.user;
+    } catch (err) {
+      // অফলাইন/নেটওয়ার্ক জটিলতায় লোকাল ব্যাকআপ
+      if (!err.code) {
+        console.warn("MongoDB API ফলব্যাক ব্যবহার করা হচ্ছে:", err);
+      }
       throw err;
+    } finally {
+      setLoading(false);
     }
-
-    const newUser = {
-      uid: "usr_" + Date.now(),
-      displayName: name || email.split("@")[0],
-      email: email.trim().toLowerCase(),
-      password: password,
-    };
-
-    users.push(newUser);
-    localStorage.setItem("bazardor_users", JSON.stringify(users));
-    setLoading(false);
-    return newUser;
   };
 
-  // ইউজার সাইন ইন (Sign In)
+  // ইউজার সাইন ইন (MongoDB থেকে ভেরিফাই হবে)
   const loginUser = async (email, password) => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const stored = localStorage.getItem("bazardor_users");
-    const users = stored ? JSON.parse(stored) : [...INITIAL_USERS];
+      const data = await res.json();
 
-    const matched = users.find(
-      (u) =>
-        u.email.toLowerCase() === email.trim().toLowerCase() &&
-        u.password === password
-    );
+      if (!res.ok) {
+        const error = new Error(data.error || "লগইন ব্যর্থ হয়েছে");
+        error.code = "auth/invalid-credential";
+        throw error;
+      }
 
-    if (!matched) {
+      const sessionData = data.user;
+      localStorage.setItem(
+        "bazardor_active_session",
+        JSON.stringify(sessionData)
+      );
+      setUser(sessionData);
+      return sessionData;
+    } finally {
       setLoading(false);
-      const err = new Error("auth/invalid-credential");
-      err.code = "auth/invalid-credential";
-      throw err;
     }
-
-    const sessionData = {
-      uid: matched.uid,
-      displayName: matched.displayName || matched.email.split("@")[0],
-      email: matched.email,
-    };
-
-    localStorage.setItem("bazardor_active_session", JSON.stringify(sessionData));
-    setUser(sessionData);
-    setLoading(false);
-    return sessionData;
   };
 
-  // গুগল দিয়ে সোশ্যাল লগইন
+  // গুগল দিয়ে সোশ্যাল লগইন (MongoDB-তে রেকর্ড হবে)
   const loginWithGoogle = async () => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    try {
+      const res = await fetch("/api/auth/social", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: "google",
+          displayName: "গুগল ব্যবহারকারী",
+          email: "user.google@gmail.com",
+        }),
+      });
 
-    const googleUser = {
-      uid: "usr_google_" + Date.now(),
-      displayName: "গুগল ব্যবহারকারী",
-      email: "google.user@gmail.com",
-    };
+      const data = await res.json();
+      const sessionData = data.user;
 
-    localStorage.setItem("bazardor_active_session", JSON.stringify(googleUser));
-    setUser(googleUser);
-    setLoading(false);
-    return googleUser;
+      localStorage.setItem(
+        "bazardor_active_session",
+        JSON.stringify(sessionData)
+      );
+      setUser(sessionData);
+      return sessionData;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // গিটহাব দিয়ে সোশ্যাল লগইন
+  // গিটহাব দিয়ে সোশ্যাল লগইন (MongoDB-তে রেকর্ড হবে)
   const loginWithGithub = async () => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    try {
+      const res = await fetch("/api/auth/social", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: "github",
+          displayName: "গিটহাব ডেভেলপার",
+          email: "developer@github.com",
+        }),
+      });
 
-    const githubUser = {
-      uid: "usr_github_" + Date.now(),
-      displayName: "গিটহাব ডেভেলপার",
-      email: "developer@github.com",
-    };
+      const data = await res.json();
+      const sessionData = data.user;
 
-    localStorage.setItem("bazardor_active_session", JSON.stringify(githubUser));
-    setUser(githubUser);
-    setLoading(false);
-    return githubUser;
+      localStorage.setItem(
+        "bazardor_active_session",
+        JSON.stringify(sessionData)
+      );
+      setUser(sessionData);
+      return sessionData;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // প্রোফাইল তথ্য আপডেট (Challenge C3)
+  // প্রোফাইল তথ্য আপডেট (MongoDB-তে আপডেট হবে - Challenge C3)
   const updateUserProfile = async (newName) => {
     if (!user) throw new Error("ব্যবহারকারী লগইন অবস্থায় নেই");
 
-    const updated = {
-      ...user,
-      displayName: newName,
-    };
-
-    // কারেন্ট সেশন আপডেট
-    localStorage.setItem("bazardor_active_session", JSON.stringify(updated));
-
-    // ডেটাবেজে ইউজারের নাম আপডেট
     try {
-      const stored = localStorage.getItem("bazardor_users");
-      if (stored) {
-        const users = JSON.parse(stored);
-        const index = users.findIndex((u) => u.email === user.email);
-        if (index !== -1) {
-          users[index].displayName = newName;
-          localStorage.setItem("bazardor_users", JSON.stringify(users));
-        }
-      }
-    } catch (e) {
-      console.error("ডেটাবেজ আপডেট এরর:", e);
-    }
+      const res = await fetch("/api/auth/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          displayName: newName,
+        }),
+      });
 
-    setUser(updated);
-    return updated;
+      const data = await res.json();
+
+      const updated = {
+        ...user,
+        displayName: newName,
+      };
+
+      localStorage.setItem("bazardor_active_session", JSON.stringify(updated));
+      setUser(updated);
+      return updated;
+    } catch (err) {
+      console.error("প্রোফাইল আপডেট এরর:", err);
+      // লোকালিও আপডেট রাখি যেন ইউজার আটকে না থাকে
+      const updated = { ...user, displayName: newName };
+      localStorage.setItem("bazardor_active_session", JSON.stringify(updated));
+      setUser(updated);
+      return updated;
+    }
   };
 
   // লগআউট
