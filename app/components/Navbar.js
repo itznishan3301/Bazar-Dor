@@ -9,6 +9,7 @@ import { getBanglaDate } from "@/app/lib/utils";
 import { getCategories } from "@/app/lib/api";
 import toast from "react-hot-toast";
 import { FiMenu, FiX, FiUser, FiLogOut } from "react-icons/fi";
+import PriceTicker from "./PriceTicker";
 
 export default function Navbar() {
   const { user, logoutUser } = useAuth();
@@ -48,6 +49,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* উপরের সারি — লোগো ও অথ বাটন */}
       <div className="container-main">
@@ -217,5 +219,7 @@ export default function Navbar() {
         </div>
       )}
     </header>
+    <PriceTicker />
+    </>
   );
 }
