@@ -1,61 +1,132 @@
-# 🛒 বাজার দর (BazarDor) — প্রতিদিনের সঠিক বাজারদর এক নজরে
+# 🛒 BazarDor (বাজার দর) — Daily Commodity Market Price Tracker
 
-একটি আধুনিক, দ্রুতগতির এবং নির্ভরযোগ্য ওয়েব অ্যাপ্লিকেশন যা বাংলাদেশের সকল নিত্যপ্রয়োজনীয় পণ্যের পাইকারি ও খুচরা বাজারদর রিয়েল-টাইমে প্রদর্শন করে। ভোক্তারা যাতে সঠিক মূল্যে পণ্য ক্রয় করতে পারেন এবং কৃত্রিম সংকট বা অতিরিক্ত মূল্যের হাত থেকে বাঁচতে পারেন, সেই লক্ষ্যে এই প্ল্যাটফর্মটি তৈরি করা হয়েছে।
-
----
-
-## 🌟 প্রজেক্টের মূল বৈশিষ্ট্যসমূহ (Key Features)
-
-1. **চলমান বাজারদর টিকার (Real-Time Price Ticker Marquee):**  
-   ন্যাভবারের ঠিক নিচে একটি মসৃণ ইনফিনিট স্ক্রলিং টিকার সার্বক্ষণিকভাবে দেশের গুরুত্বপূর্ণ নিত্যপণ্যের বর্তমান মূল্য এবং মূল্য পরিবর্তনের দিক (বৃদ্ধি ▲ বা হ্রাস ▼) প্রদর্শন করে।
-
-2. **মূল্য ওঠানামা ট্র্যাকিং (Price Risers & Fallers Breakdown):**  
-   গতকালের তুলনায় যেসব পণ্যের দাম বেড়েছে (আজ দাম বেড়েছে ▲) এবং যেসব পণ্যের দাম কমেছে (আজ দাম কমেছে ▼), তাদের শীর্ষ তালিকা হোম পেজেই আকর্ষণীয় ভিজ্যুয়াল ব্যাজ সহ প্রদর্শিত হয়।
-
-3. **সংখ্যাগত মানের ভিত্তিতে নিখুঁত সর্টিং (Numeric Price Sorting - C1):**  
-   ক্যাটাগরি পেজে ব্যবহারকারীরা পণ্যের দাম অনুযায়ী "ডিফল্ট", "দাম: কম থেকে বেশি" এবং "দাম: বেশি থেকে কম" ক্রমে পণ্য সাজাতে পারেন। এটি বাংলা সংখ্যার স্ট্রিং নয়, বরং প্রকৃত সংখ্যাগত মানের (Numeric Value) ভিত্তিতে নির্ভুলভাবে কাজ করে।
-
-4. **বাজারভিত্তিক বিস্তারিত দর ও বিশ্লেষণ (Market-wise Price Matrix):**  
-   প্রতিটি পণ্যের একক পৃষ্ঠায় দেশের ৮টি বিভাগের (ঢাকা, চট্টগ্রাম, রাজশাহী, খুলনা, সিলেট, ইত্যাদি) বিভিন্ন কাঁচাবাজারের সর্বনিম্ন, সর্বোচ্চ এবং গড় মূল্যের বিস্তারিত তুলনামূলক তালিকা ও চার্ট সংরক্ষিত থাকে।
-
-5. **নিরাপদ অথেনটিকেশন ও প্রোফাইল ব্যবস্থাপনা (Authentication & User Profile - C3):**  
-   ইমেইল/পাসওয়ার্ড ও গুগল সোশ্যাল লগইনের সুবিধা। অননুমোদিত ব্যবহারকারীদের জন্য সংরক্ষিত পৃষ্ঠা সুরক্ষিত রাখার ব্যবস্থা এবং প্রোফাইল থেকে সহজেই ব্যবহারকারীর নাম ও তথ্য আপডেট করার ফিচার।
+A modern, high-performance, and responsive web application designed to track and analyze daily wholesale and retail commodity prices across major markets in Bangladesh. **BazarDor** empowers everyday consumers and shoppers with real-time price updates, price fluctuations, and division-wise market comparisons to make informed purchasing decisions and avoid artificial price inflation.
 
 ---
 
-## 🛠️ ব্যবহৃত প্রযুক্তিসমূহ (Technologies Used)
+## 🚀 Live Demo & Repository
 
-* **ফ্রন্টএন্ড ফ্রেমওয়ার্ক:** Next.js 16 (App Router)
-* **ইউজার ইন্টারফেস:** React 19
-* **স্টাইলিং:** Tailwind CSS v4, DaisyUI v5
-* **আইকন লাইব্রেরি:** React Icons (Feather Icons, FontAwesome)
-* **টাইপোগ্রাফি:** Google Fonts (Hind Siliguri — সুনির্দিষ্ট বাংলা ফন্ট)
-* **অথেনটিকেশন:** Firebase Auth / BetterAuth Client Standard
-* **নোটিফিকেশন:** React Hot Toast
-* **ডেটা সোর্স:** Programming Hero OpenAPI (Bazardor API)
+- **Repository Link:** [https://github.com/itznishan3301/Bazar-Dor](https://github.com/itznishan3301/Bazar-Dor)
+- **Live Deployment:** [Deploy on Vercel / Cloudflare Pages / Netlify]
 
 ---
 
-## 🚀 কীভাবে লোকালি রান করবেন (Getting Started)
+## 🌟 Key Features (5+ Core Highlights)
 
-### ১. ক্লোন ও ফোল্ডারে প্রবেশ:
+1. **Continuous Real-Time Price Ticker Marquee:**
+   - Positioned directly beneath the navigation bar, featuring an infinite-scroll marquee strip displaying real-time price indicators, units, and fluctuation badges (`▲ / ▼ %`) across all essential commodities.
+   - Interactive hover-to-pause capability for effortless scanning.
+
+2. **Market Risers & Fallers Tracker (Home Page Sections):**
+   - **Section A (“আজ দাম বেড়েছে ▲”):** Highlights top 6 commodities with price surges compared to the previous day with distinct green indicators.
+   - **Section B (“আজ দাম কমেছে ▼”):** Highlights top 6 commodities experiencing price drops with distinct red indicators.
+   - **Section C (“সব পণ্য”):** Comprehensive responsive product grid with instant category filter chips and smooth skeleton loading placeholders.
+
+3. **Numeric Price Sorting (Challenge C1):**
+   - Category pages feature a multi-criteria sort dropdown: `Default (ডিফল্ট)`, `Price: Low to High (দাম: কম থেকে বেশি)`, and `Price: High to Low (দাম: বেশি থেকে কম)`.
+   - Engineered to sort by genuine numeric values rather than string representations, ensuring mathematically accurate price order.
+
+4. **Division-wise Market Breakdown & Analytics:**
+   - Dedicated product detail pages (`/product/[slug]`) provide comprehensive pricing statistics: **Minimum Price**, **Maximum Price**, and **National Average Price**.
+   - Interactive division filter tabs (Dhaka, Chittagong, Rajshahi, Khulna, Sylhet, etc.) allowing users to examine specific market rates across prominent wholesale and retail hubs.
+   - Historical comparative strip reviewing prices from today, yesterday, last week, and last month.
+
+5. **Secure Authentication & Profile Information Update (Challenge C3):**
+   - Complete authentication flow supporting Email/Password and one-click Google Social Authentication.
+   - Protected route guards ensuring single product analysis pages are securely accessed by authenticated users.
+   - Profile management dashboard (`/profile`) paired with a dedicated information update workflow (`/profile/update`) allowing users to seamlessly edit their profile name.
+
+6. **Responsive Design & UX Polish:**
+   - Fluid responsiveness optimized across mobile, tablet, and desktop viewports.
+   - Graceful 404 page handling with instant return navigation.
+   - Smooth skeleton animations during asynchronous data fetches and custom toast notifications powered by `react-hot-toast`.
+
+---
+
+## 🛠️ Technologies & Libraries Used
+
+| Technology | Purpose |
+|---|---|
+| **Next.js 16 (App Router)** | Modern full-stack React framework with server and client components |
+| **React 19** | Component-driven UI library |
+| **Tailwind CSS v4** | Utility-first responsive styling engine |
+| **DaisyUI v5** | Accessible, pre-styled semantic component primitives |
+| **Firebase Auth** | Client authentication state management & Google OAuth provider |
+| **React Hot Toast** | Lightweight, animated toast notifications for user actions |
+| **React Icons** | Feather & FontAwesome icon set |
+| **Google Fonts (Hind Siliguri)** | Polished Bengali typography support |
+| **Programming Hero OpenAPI** | RESTful endpoint delivering real-time commodity data |
+
+---
+
+## 📁 Project Architecture & Folder Structure
+
+```text
+assignment/
+├── app/
+│   ├── category/
+│   │   └── [slug]/
+│   │       └── page.js          # Dynamic category view with numeric sorting (C1)
+│   ├── components/
+│   │   ├── Footer.js            # Footer with tagline & market disclaimer
+│   │   ├── Hero.js              # Responsive banner with smooth-scroll CTA
+│   │   ├── HomeProducts.js      # Sections A, B, and C with category chips
+│   │   ├── Navbar.js            # Sticky navbar with Bengali date & category links
+│   │   ├── PriceTicker.js       # Infinite scrolling price marquee
+│   │   ├── PrivateRoute.js      # Protected route client wrapper
+│   │   ├── ProductCard.js       # Reusable commodity card with badge indicators
+│   │   └── ProductSkeleton.js   # Animated skeleton loading grid
+│   ├── context/
+│   │   └── AuthContext.js       # Authentication state context provider
+│   ├── lib/
+│   │   ├── api.js               # Data fetcher utilities connecting to OpenAPI
+│   │   ├── firebase.config.js   # Client authentication configuration
+│   │   └── utils.js             # Bengali numeral, date, unit, & badge formatters
+│   ├── product/
+│   │   └── [slug]/
+│   │       └── page.js          # Protected product details & market matrix
+│   ├── profile/
+│   │   ├── page.js              # User profile overview
+│   │   └── update/
+│   │       └── page.js          # Profile name update route (C3)
+│   ├── signin/
+│   │   └── page.js              # Sign In page with email & Google authentication
+│   ├── signup/
+│   │   └── page.js              # Sign Up registration page with validation
+│   ├── globals.css              # Design tokens, keyframe animations, & utilities
+│   ├── layout.js                # Root layout with font imports & global toaster
+│   ├── not-found.js             # Custom 404 page with home redirect
+│   └── page.js                  # Primary Home landing page
+├── public/
+│   ├── bazar-hero.png           # Hero banner asset
+│   └── logo-icon.png            # Official brand logo
+├── next.config.mjs              # Next.js configuration
+├── package.json                 # Project dependencies & scripts
+└── README.md                    # Project documentation
+```
+
+---
+
+## ⚡ Getting Started (Local Development)
+
+### 1. Clone the repository
 ```bash
 git clone https://github.com/itznishan3301/Bazar-Dor.git
 cd Bazar-Dor
 ```
 
-### ২. ডিপেন্ডেন্সি ইন্সটল করুন:
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-### ৩. ডেভেলপমেন্ট সার্ভার চালু করুন:
+### 3. Start development server
 ```bash
 npm run dev
 ```
-ব্রাউজারে [http://localhost:3000](http://localhost:3000) ওপেন করে প্রজেক্টটি দেখুন।
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-### ৪. প্রোডাকশন বিল্ড তৈরি করুন:
+### 4. Build for production
 ```bash
 npm run build
 npm run start
@@ -63,53 +134,18 @@ npm run start
 
 ---
 
-## 📂 ফোল্ডার স্ট্রাকচার (Folder Structure)
+## 🌐 API Endpoints Utilized
 
-```text
-assignment/
-├── app/
-│   ├── category/
-│   │   └── [slug]/
-│   │       └── page.js          # ক্যাটাগরি পেজ ও সর্টিং
-│   ├── components/
-│   │   ├── Footer.js            # ফুটার কম্পোনেন্ট
-│   │   ├── Hero.js              # হিরো ব্যানার ও স্মুথ স্ক্রল CTA
-│   │   ├── HomeProducts.js      # হোম পেজের রিসার্স, ফলার্স ও পণ্য গ্রিড
-│   │   ├── Navbar.js            # ন্যাভবার, বাংলা তারিখ ও ক্যাটাগরি মেনু
-│   │   ├── PriceTicker.js       # চলমান মূল্য টিকার
-│   │   ├── PrivateRoute.js      # সুরক্ষিত রুট র‍্যাপার
-│   │   ├── ProductCard.js       # পণ্য কার্ড ও ব্যাজ
-│   │   └── ProductSkeleton.js   # লোডিং স্কেলিটন এনিমেশন
-│   ├── context/
-│   │   └── AuthContext.js       # অথেনটিকেশন স্টেট প্রোভাইডার
-│   ├── lib/
-│   │   ├── api.js               # রিয়েলটাইম API ফেচার
-│   │   ├── firebase.config.js   # অথেনটিকেশন কনফিগ
-│   │   └── utils.js             # বাংলা সংখ্যা, তারিখ ও প্রাইস হেল্পার
-│   ├── product/
-│   │   └── [slug]/
-│   │       └── page.js          # বিস্তারিত বাজারভিত্তিক পণ্য বিবরণ
-│   ├── profile/
-│   │   ├── page.js              # ব্যবহারকারীর প্রোফাইল
-│   │   └── update/
-│   │       └── page.js          # তথ্য আপডেট পেজ (C3)
-│   ├── signin/
-│   │   └── page.js              # লগইন পেজ ও গুগল অথ
-│   ├── signup/
-│   │   └── page.js              # নতুন একাউন্ট নিবন্ধন পেজ
-│   ├── globals.css              # গ্লোবাল সিএসএস ও থিম টোকেন
-│   ├── layout.js                # রুট লেআউট ও টোস্টার
-│   ├── not-found.js             # ফ্রেন্ডলি ৪০৪ এরর পেজ
-│   └── page.js                  # মূল হোম পেজ
-├── public/
-│   ├── bazar-hero.png           # হিরো ব্যানার চিত্র
-│   └── logo-icon.png            # বাজার দর লোগো
-├── next.config.mjs              # নেক্সট.জেএস কনফিগারেশন
-└── package.json
-```
+- **Base Endpoint:** `https://openapi.programming-hero.com/api/bazardor`
+- **All Commodities:** `/products`
+- **Category Filter:** `/products?category={category_slug}`
+- **Single Product Details:** `/products/{id}`
+- **All Categories:** `/categories`
+- **Single Category:** `/categories/{slug}`
 
 ---
 
-## 📄 লাইসেন্স ও কপিরাইট
-© ২০২৬ বাজার দর। সর্বস্বত্ব সংরক্ষিত।
-প্রয়োজনীয় পণ্যের সঠিক দাম এক নজরে।
+## 📄 License & Attribution
+
+Developed for **Programming Hero Batch-14 Assignment-07 (BazarDor)**.  
+© 2026 BazarDor. All rights reserved.
