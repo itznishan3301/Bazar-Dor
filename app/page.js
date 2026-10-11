@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import HomeProducts from "./components/HomeProducts";
 import Footer from "./components/Footer";
 
 export default function Home() {
@@ -8,14 +9,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-grow">
         <Hero />
-        
-        {/* Placeholder container for product sections */}
-        <div className="container-main py-10" id="সব-পণ্য">
-          <div className="text-center py-8">
-            <h2 className="text-2xl font-bold text-slate-800">সব পণ্য</h2>
-            <p className="text-slate-500 mt-1">প্রয়োজনীয় সব পণ্যের তালিকা আসছে...</p>
-          </div>
-        </div>
+        <HomeProducts />
       </main>
       <Footer />
     </div>
