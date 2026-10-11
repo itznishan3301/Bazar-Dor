@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body className="overflow-x-hidden w-full max-w-full">
         <AuthProvider>
           <Toaster
             position="top-center"

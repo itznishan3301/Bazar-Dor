@@ -5,11 +5,11 @@ import { FiHome, FiAlertTriangle } from "react-icons/fi";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 w-full overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center py-16 px-4">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10 text-center space-y-6">
+      <main className="flex-grow flex items-center justify-center py-8 sm:py-16 px-4 w-full overflow-x-hidden">
+        <div className="max-w-md w-full bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-10 text-center space-y-6">
           <div className="w-20 h-20 rounded-full bg-amber-50 border border-amber-200 text-amber-500 flex items-center justify-center mx-auto text-4xl shadow-inner">
             <FiAlertTriangle />
           </div>

@@ -46,10 +46,10 @@ export default function UpdateProfilePage() {
 
   return (
     <PrivateRoute>
-      <div className="flex flex-col min-h-screen bg-slate-50">
+      <div className="flex flex-col min-h-screen bg-slate-50 w-full overflow-x-hidden">
         <Navbar />
 
-        <main className="flex-grow container-main py-6 sm:py-10">
+        <main className="flex-grow container-main py-6 sm:py-10 w-full overflow-x-hidden">
           <div className="max-w-xl mx-auto">
             {/* ব্যাক বাটন */}
             <Link

@@ -94,10 +94,10 @@ export default function ProductDetailPage({ params }) {
 
   return (
     <PrivateRoute>
-      <div className="flex flex-col min-h-screen bg-slate-50">
+      <div className="flex flex-col min-h-screen bg-slate-50 w-full overflow-x-hidden">
         <Navbar />
 
-        <main className="flex-grow container-main py-4 sm:py-8">
+        <main className="flex-grow container-main py-4 sm:py-8 w-full overflow-x-hidden">
           {/* ব্রেডক্রাম্ব ও ব্যাক বাটন (Responsive Layout) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
             <nav className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap">

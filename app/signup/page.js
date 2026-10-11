@@ -106,10 +106,10 @@ function SignUpContent() {
       : "/signin";
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 w-full overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center py-6 sm:py-12 px-3.5 sm:px-4">
+      <main className="flex-grow flex items-center justify-center py-6 sm:py-12 px-3.5 sm:px-4 w-full overflow-x-hidden">
         <div className="w-full max-w-md bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl p-5 sm:p-8 space-y-5 sm:space-y-6">
           {/* হেডার */}
           <div className="text-center space-y-1.5 sm:space-y-2">

@@ -22,10 +22,10 @@ export default function ProfilePage() {
 
   return (
     <PrivateRoute>
-      <div className="flex flex-col min-h-screen bg-slate-50">
+      <div className="flex flex-col min-h-screen bg-slate-50 w-full overflow-x-hidden">
         <Navbar />
 
-        <main className="flex-grow container-main py-6 sm:py-10">
+        <main className="flex-grow container-main py-6 sm:py-10 w-full overflow-x-hidden">
           {/* ব্রেডক্রাম্ব */}
           <nav className="flex items-center gap-2 text-xs text-slate-500 mb-4 sm:mb-6">
             <Link
