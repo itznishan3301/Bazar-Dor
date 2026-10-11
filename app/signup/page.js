@@ -109,14 +109,14 @@ function SignUpContent() {
     <div className="flex flex-col min-h-screen bg-slate-50">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center py-12 px-4">
-        <div className="w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-xl p-8 space-y-6">
+      <main className="flex-grow flex items-center justify-center py-6 sm:py-12 px-3.5 sm:px-4">
+        <div className="w-full max-w-md bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl p-5 sm:p-8 space-y-5 sm:space-y-6">
           {/* হেডার */}
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold">
+          <div className="text-center space-y-1.5 sm:space-y-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto text-xl sm:text-2xl font-bold">
               📝
             </div>
-            <h1 className="text-2xl font-black text-slate-800">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-800">
               নতুন একাউন্ট নিবন্ধন করুন
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">

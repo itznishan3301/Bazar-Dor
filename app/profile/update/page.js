@@ -49,21 +49,21 @@ export default function UpdateProfilePage() {
       <div className="flex flex-col min-h-screen bg-slate-50">
         <Navbar />
 
-        <main className="flex-grow container-main py-10">
+        <main className="flex-grow container-main py-6 sm:py-10">
           <div className="max-w-xl mx-auto">
             {/* ব্যাক বাটন */}
             <Link
               href="/profile"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors mb-6"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors mb-4 sm:mb-6"
             >
               <FiArrowLeft />
               <span>প্রোফাইলে ফিরে যান</span>
             </Link>
 
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10 space-y-6">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-xl p-5 sm:p-8 md:p-10 space-y-5 sm:space-y-6">
               {/* হেডার */}
               <div className="space-y-1">
-                <h1 className="text-2xl font-black text-slate-900">
+                <h1 className="text-xl sm:text-2xl font-black text-slate-900">
                   তথ্য পরিবর্তন করুন (Update Information)
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500">
@@ -90,11 +90,11 @@ export default function UpdateProfilePage() {
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center gap-3">
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary rounded-xl px-7 text-white font-bold flex items-center gap-2 shadow-sm hover:shadow"
+                    className="btn btn-primary rounded-xl px-7 text-white font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow w-full sm:w-auto"
                   >
                     {submitting ? (
                       <span className="loading loading-spinner loading-sm"></span>

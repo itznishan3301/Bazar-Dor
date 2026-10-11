@@ -69,16 +69,16 @@ export default function Navbar() {
             <Image
               src="/logo-icon.png"
               alt="বাজার দর লোগো"
-              width={36}
-              height={36}
-              className="rounded"
+              width={34}
+              height={34}
+              className="rounded shrink-0"
             />
             <div>
-              <h1 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">
+              <h1 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] leading-tight">
                 বাজার দর
               </h1>
               {banglaDate && (
-                <p className="text-xs text-[var(--color-text-light)]">
+                <p className="text-[10px] sm:text-xs text-[var(--color-text-light)]">
                   {banglaDate}
                 </p>
               )}
@@ -124,7 +124,7 @@ export default function Navbar() {
 
           {/* মোবাইল মেনু বাটন */}
           <button
-            className="md:hidden text-2xl text-[var(--color-text-dark)]"
+            className="md:hidden p-1.5 text-2xl text-[var(--color-text-dark)] hover:text-blue-600 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="মেনু খুলুন"
           >
@@ -133,13 +133,13 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* দ্বিতীয় সারি — ক্যাটাগরি ন্যাভ লিংক */}
+      {/* দ্বিতীয় সারি — ক্যাটাগরি ন্যাভ লিংক (মোবাইলে স্মুথ অনুভূমিক স্ক্রল) */}
       <nav className="border-t border-[var(--color-border)] bg-[var(--color-bg-light)]">
         <div className="container-main">
-          <div className="hidden md:flex items-center gap-1 py-2 overflow-x-auto">
+          <div className="flex items-center gap-1.5 py-1.5 md:py-2 overflow-x-auto no-scrollbar">
             <Link
               href="/"
-              className={`nav-link text-sm ${
+              className={`nav-link text-xs sm:text-sm whitespace-nowrap shrink-0 ${
                 pathname === "/" ? "active" : ""
               }`}
             >
@@ -149,7 +149,7 @@ export default function Navbar() {
               <Link
                 key={cat.id}
                 href={`/category/${cat.slug}`}
-                className={`nav-link text-sm ${
+                className={`nav-link text-xs sm:text-sm whitespace-nowrap shrink-0 ${
                   isCategoryActive(cat.slug) ? "active" : ""
                 }`}
               >

@@ -155,5 +155,29 @@ body {
 .container-main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 12px;
 }
+
+@media (min-width: 640px) {
+  .container-main {
+    padding: 0 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding: 0 24px;
+  }
+}
+
+/* ============================================
+   মোবাইল অনুভূমিক স্ক্রল (নো-স্ক্রলবার)
+   ============================================ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

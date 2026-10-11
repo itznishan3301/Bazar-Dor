@@ -8,6 +8,12 @@ export const metadata = {
     "বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের বাজার দর, দামের তুলনা ও বিশ্লেষণ এক নজরে দেখুন। চাল, ডাল, তেল, সবজি, মাছ, মাংস সবকিছুর আজকের দাম।",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="bn" data-theme="light">

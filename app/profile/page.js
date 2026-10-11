@@ -25,9 +25,9 @@ export default function ProfilePage() {
       <div className="flex flex-col min-h-screen bg-slate-50">
         <Navbar />
 
-        <main className="flex-grow container-main py-10">
+        <main className="flex-grow container-main py-6 sm:py-10">
           {/* ব্রেডক্রাম্ব */}
-          <nav className="flex items-center gap-2 text-xs text-slate-500 mb-6">
+          <nav className="flex items-center gap-2 text-xs text-slate-500 mb-4 sm:mb-6">
             <Link
               href="/"
               className="flex items-center gap-1 hover:text-blue-600 transition-colors"
@@ -40,14 +40,14 @@ export default function ProfilePage() {
           </nav>
 
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-8">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8">
               {/* প্রোফাইল হেডার */}
-              <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left border-b border-slate-100 pb-6">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center text-3xl sm:text-4xl font-bold shadow-md">
+              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-left border-b border-slate-100 pb-5 sm:pb-6">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold shadow-md shrink-0">
                   {user?.displayName ? user.displayName.charAt(0).toUpperCase() : "👤"}
                 </div>
                 <div className="space-y-1">
-                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 break-words">
                     {user?.displayName || "নাম নির্ধারণ করা হয়নি"}
                   </h1>
                   <p className="text-sm text-slate-500 flex items-center justify-center sm:justify-start gap-1">
