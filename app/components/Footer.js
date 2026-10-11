@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* বামে */}
           <div className="text-center md:text-left">
-            <h3 className="text-lg font-bold">🛒 বাজার দর</h3>
+            <h3 className="text-lg font-bold">বাজার দর</h3>
             <p className="text-sm text-gray-300 mt-1">
               প্রয়োজনীয় পণ্যের দাম এক নজরে।
             </p>

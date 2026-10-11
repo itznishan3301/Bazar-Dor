@@ -75,7 +75,7 @@ export default function Navbar() {
             />
             <div>
               <h1 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">
-                🛒 বাজার দর
+                বাজার দর
               </h1>
               {banglaDate && (
                 <p className="text-xs text-[var(--color-text-light)]">
