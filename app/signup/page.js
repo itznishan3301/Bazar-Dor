@@ -18,7 +18,7 @@ export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const { registerUser, updateUserProfile, loginWithGoogle } = useAuth();
+  const { registerUser, loginWithGoogle, loginWithGithub } = useAuth();
   const router = useRouter();
 
   // ইউজার রেজিস্ট্রেশন সাবমিশন
@@ -40,10 +40,8 @@ export default function SignUpPage() {
 
     try {
       setSubmitting(true);
-      // ১. একাউন্ট তৈরি
-      await registerUser(email, password);
-      // ২. প্রোফাইলে নাম সেট
-      await updateUserProfile(name);
+      // একাউন্ট তৈরি ও নাম সংরক্ষণ
+      await registerUser(email, password, name);
 
       toast.success("রেজিস্ট্রেশন সফল হয়েছে! অনুগ্রহ করে লগইন করুন।");
       // রিকোয়ারমেন্ট: রেজিস্ট্রেশন সফল হলে লগইন পেজে নেভিগেট
@@ -77,6 +75,23 @@ export default function SignUpPage() {
       console.error("গুগল এরর:", err);
       setErrorMessage("গুগল দিয়ে সংযোগ স্থাপন করা সম্ভব হয়নি।");
       toast.error("গুগল অথেনটিকেশন ব্যর্থ হয়েছে");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // সোশ্যাল গিটহাব রেজিস্ট্রেশন/লগইন
+  const handleGithubAuth = async () => {
+    try {
+      setSubmitting(true);
+      setErrorMessage("");
+      await loginWithGithub();
+      toast.success("গিটহাব দিয়ে সফলভাবে সংযুক্ত হয়েছেন!");
+      router.push("/");
+    } catch (err) {
+      console.error("গিটহাব এরর:", err);
+      setErrorMessage("গিটহাব দিয়ে সংযোগ স্থাপন করা সম্ভব হয়নি।");
+      toast.error("গিটহাব অথেনটিকেশন ব্যর্থ হয়েছে");
     } finally {
       setSubmitting(false);
     }
@@ -181,7 +196,7 @@ export default function SignUpPage() {
           <div className="relative flex items-center justify-center">
             <div className="border-t border-slate-200 w-full"></div>
             <span className="bg-white px-3 text-xs text-slate-400 uppercase font-semibold">
-              অথবা
+              অথবা সোশ্যাল রেজিস্ট্রেশন
             </span>
           </div>
 
@@ -199,11 +214,8 @@ export default function SignUpPage() {
 
             <button
               type="button"
-              onClick={() => {
-                toast("গিটহাব অথেনটিকেশন বর্তমানে উন্নয়নশীল, গুগল ব্যবহার করুন", {
-                  icon: "ℹ️",
-                });
-              }}
+              onClick={handleGithubAuth}
+              disabled={submitting}
               className="btn btn-outline w-full rounded-xl border-slate-300 hover:bg-slate-50 hover:border-slate-400 text-slate-700 flex items-center justify-center gap-2 text-sm font-semibold"
             >
               <FaGithub className="text-lg" />

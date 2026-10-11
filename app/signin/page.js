@@ -7,7 +7,7 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { useAuth } from "@/app/context/AuthContext";
 import toast from "react-hot-toast";
-import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
+import { FiMail, FiLock, FiArrowRight, FiKey } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
@@ -17,7 +17,7 @@ export default function SignInPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const { loginUser, loginWithGoogle } = useAuth();
+  const { loginUser, loginWithGoogle, loginWithGithub } = useAuth();
   const router = useRouter();
 
   // ইমেইল/পাসওয়ার্ড দিয়ে সাইন ইন
@@ -38,14 +38,26 @@ export default function SignInPage() {
       router.push("/");
     } catch (err) {
       console.error("লগইন এরর:", err);
-      let msg = "লগইন ব্যর্থ হয়েছে। ইমেইল বা পাসওয়ার্ড ভুল।";
-      if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found") {
-        msg = "ভুল ইমেইল বা পাসওয়ার্ড প্রদান করা হয়েছে।";
-      } else if (err.code === "auth/wrong-password") {
-        msg = "পাসওয়ার্ডটি সঠিক নয়।";
-      }
+      const msg = "ভুল ইমেইল বা পাসওয়ার্ড প্রদান করা হয়েছে। আবার চেষ্টা করুন।";
       setErrorMessage(msg);
       toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // ডেমো একাউন্টে ১-ক্লিক কুইক লগইন
+  const handleQuickDemoLogin = async () => {
+    try {
+      setSubmitting(true);
+      setErrorMessage("");
+      setEmail("demo@bazardor.com");
+      setPassword("password123");
+      await loginUser("demo@bazardor.com", "password123");
+      toast.success("ডেমো একাউন্টে সফলভাবে প্রবেশ করেছেন!");
+      router.push("/");
+    } catch (err) {
+      toast.error("ডেমো লগইন ব্যর্থ হয়েছে");
     } finally {
       setSubmitting(false);
     }
@@ -68,6 +80,23 @@ export default function SignInPage() {
     }
   };
 
+  // গিটহাব দিয়ে সোশ্যাল লগইন
+  const handleGithubLogin = async () => {
+    try {
+      setSubmitting(true);
+      setErrorMessage("");
+      await loginWithGithub();
+      toast.success("গিটহাব দিয়ে সফলভাবে লগইন হয়েছে!");
+      router.push("/");
+    } catch (err) {
+      console.error("গিটহাব লগইন এরর:", err);
+      setErrorMessage("গিটহাব দিয়ে সাইন ইন করা সম্ভব হয়নি।");
+      toast.error("গিটহাব সাইন ইন ব্যর্থ হয়েছে");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <Navbar />
@@ -84,6 +113,25 @@ export default function SignInPage() {
             </h1>
             <p className="text-xs sm:text-sm text-slate-500">
               বাজার দরে স্বাগতম! নিত্যপণ্যের নির্ভরযোগ্য বাজার তথ্য দেখতে লগইন করুন।
+            </p>
+          </div>
+
+          {/* ১-ক্লিক ডেমো লগইন বক্স (পরীক্ষকের জন্য সহজ ব্যবস্থা) */}
+          <div className="bg-blue-50/80 border border-blue-200/90 rounded-2xl p-3.5 text-center">
+            <p className="text-xs text-blue-900 font-semibold mb-2">
+              দ্রুত টেস্ট করতে চান?
+            </p>
+            <button
+              type="button"
+              onClick={handleQuickDemoLogin}
+              disabled={submitting}
+              className="btn btn-sm btn-primary w-full rounded-xl text-white font-bold flex items-center justify-center gap-1.5 shadow-sm"
+            >
+              <FiKey />
+              <span>১-ক্লিকে ডেমো লগইন করুন</span>
+            </button>
+            <p className="text-[11px] text-slate-500 mt-1.5">
+              ইমেইল: <span className="font-mono text-slate-700">demo@bazardor.com</span> | পাসওয়ার্ড: <span className="font-mono text-slate-700">password123</span>
             </p>
           </div>
 
@@ -150,7 +198,7 @@ export default function SignInPage() {
           <div className="relative flex items-center justify-center">
             <div className="border-t border-slate-200 w-full"></div>
             <span className="bg-white px-3 text-xs text-slate-400 uppercase font-semibold">
-              অথবা
+              অথবা সোশ্যাল লগইন
             </span>
           </div>
 
@@ -168,11 +216,8 @@ export default function SignInPage() {
 
             <button
               type="button"
-              onClick={() => {
-                toast("গিটহাব লগইন বর্তমানে উন্নয়নশীল, গুগল ব্যবহার করুন", {
-                  icon: "ℹ️",
-                });
-              }}
+              onClick={handleGithubLogin}
+              disabled={submitting}
               className="btn btn-outline w-full rounded-xl border-slate-300 hover:bg-slate-50 hover:border-slate-400 text-slate-700 flex items-center justify-center gap-2 text-sm font-semibold"
             >
               <FaGithub className="text-lg" />
