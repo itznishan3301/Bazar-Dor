@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { useAuth } from "@/app/context/AuthContext";
 import toast from "react-hot-toast";
-import { FiMail, FiLock, FiArrowRight } from "react-icons/fi";
+import { FiMail, FiLock, FiArrowRight, FiInfo } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
-export default function SignInPage() {
+function SignInContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,6 +19,8 @@ export default function SignInPage() {
 
   const { loginUser, loginWithGoogle, loginWithGithub } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   // ইমেইল/পাসওয়ার্ড দিয়ে সাইন ইন
   const handleSubmit = async (e) => {
@@ -35,7 +37,7 @@ export default function SignInPage() {
       setSubmitting(true);
       await loginUser(email, password);
       toast.success("সফলভাবে সাইন ইন হয়েছে!");
-      router.push("/");
+      router.push(callbackUrl);
     } catch (err) {
       console.error("লগইন এরর:", err);
       const msg = "ভুল ইমেইল বা পাসওয়ার্ড প্রদান করা হয়েছে। আবার চেষ্টা করুন।";
@@ -46,13 +48,12 @@ export default function SignInPage() {
     }
   };
 
-
-  // গুগল দিয়ে সোশ্যাল লগইন (সরাসরি গুগল একাউন্ট চুজারে রিডাইরেক্ট করবে)
+  // গুগল দিয়ে সোশ্যাল লগইন (সরাসরি গুগল একাউন্ট চুজারে রিডাইরেক্ট করবে এবং callbackUrl মনে রাখবে)
   const handleGoogleLogin = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
-      await loginWithGoogle();
+      await loginWithGoogle(callbackUrl);
       // ব্রাউজার স্বয়ংক্রিয়ভাবে গুগলের একাউন্ট সিলেকশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গুগল লগইন এরর:", err);
@@ -64,12 +65,12 @@ export default function SignInPage() {
     }
   };
 
-  // গিটহাব দিয়ে সোশ্যাল লগইন (সরাসরি গিটহাব অথেনটিকেশন স্ক্রিনে রিডাইরেক্ট করবে)
+  // গিটহাব দিয়ে সোশ্যাল লগইন (সরাসরি গিটহাব অথেনটিকেশন স্ক্রিনে রিডাইরেক্ট করবে এবং callbackUrl মনে রাখবে)
   const handleGithubLogin = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
-      await loginWithGithub();
+      await loginWithGithub(callbackUrl);
       // ব্রাউজার স্বয়ংক্রিয়ভাবে গিটহাবের একাউন্ট অথোরাইজেশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গিটহাব লগইন এরর:", err);
@@ -80,6 +81,11 @@ export default function SignInPage() {
       setSubmitting(false);
     }
   };
+
+  const registerHref =
+    callbackUrl !== "/"
+      ? `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`
+      : "/signup";
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
@@ -100,6 +106,15 @@ export default function SignInPage() {
             </p>
           </div>
 
+          {/* পূর্বের পেজের রিডাইরেক্ট নোটিশ */}
+          {callbackUrl !== "/" && (
+            <div className="bg-blue-50 border border-blue-200 text-blue-700 text-xs rounded-xl p-3 flex items-center gap-2">
+              <FiInfo className="text-base shrink-0" />
+              <span>
+                লগইন সফল হলে আপনি সরাসরি আপনার পূর্বের পেজে ফিরে যাবেন।
+              </span>
+            </div>
+          )}
 
           {/* এরর মেসেজ অ্যালার্ট */}
           {errorMessage && (
@@ -196,7 +211,7 @@ export default function SignInPage() {
             <p className="text-xs text-slate-600">
               নতুন ব্যবহারকারী?{" "}
               <Link
-                href="/signup"
+                href={registerHref}
                 className="text-blue-600 font-bold hover:underline"
               >
                 এখানে বিনামূল্যে একাউন্ট খুলুন
@@ -208,5 +223,19 @@ export default function SignInPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <span className="loading loading-spinner loading-lg text-blue-600"></span>
+        </div>
+      }
+    >
+      <SignInContent />
+    </Suspense>
   );
 }

@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { useAuth } from "@/app/context/AuthContext";
 import toast from "react-hot-toast";
-import { FiUser, FiMail, FiLock, FiCheckCircle } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiCheckCircle, FiInfo } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
-export default function SignUpPage() {
+function SignUpContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +20,8 @@ export default function SignUpPage() {
 
   const { registerUser, loginWithGoogle, loginWithGithub } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   // ইউজার রেজিস্ট্রেশন সাবমিশন
   const handleSubmit = async (e) => {
@@ -44,7 +46,7 @@ export default function SignUpPage() {
       await registerUser(email, password, name);
 
       toast.success("রেজিস্ট্রেশন ও লগইন সফল হয়েছে! স্বাগতম।");
-      router.push("/");
+      router.push(callbackUrl);
     } catch (err) {
       console.error("রেজিস্ট্রেশন এরর:", err);
       let msg = "রেজিস্ট্রেশন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
@@ -70,7 +72,7 @@ export default function SignUpPage() {
       setSubmitting(true);
       setErrorMessage("");
       // সরাসরি Google OAuth একাউন্ট সিলেকশন স্ক্রিনে রিডাইরেক্ট
-      await loginWithGoogle();
+      await loginWithGoogle(callbackUrl);
     } catch (err) {
       console.error("গুগল রিডাইরেক্ট এরর:", err);
       setErrorMessage(
@@ -86,7 +88,7 @@ export default function SignUpPage() {
     try {
       setSubmitting(true);
       setErrorMessage("");
-      await loginWithGithub();
+      await loginWithGithub(callbackUrl);
       // ব্রাউজার স্বয়ংক্রিয়ভাবে গিটহাবের একাউন্ট অথোরাইজেশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গিটহাব এরর:", err);
@@ -97,6 +99,11 @@ export default function SignUpPage() {
       setSubmitting(false);
     }
   };
+
+  const signinHref =
+    callbackUrl !== "/"
+      ? `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`
+      : "/signin";
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
@@ -116,6 +123,16 @@ export default function SignUpPage() {
               বাজার দরে যুক্ত হয়ে প্রতিদিনের বাজারদর যাচাই করুন সহজে।
             </p>
           </div>
+
+          {/* পূর্বের পেজের রিডাইরেক্ট নোটিশ */}
+          {callbackUrl !== "/" && (
+            <div className="bg-blue-50 border border-blue-200 text-blue-700 text-xs rounded-xl p-3 flex items-center gap-2">
+              <FiInfo className="text-base shrink-0" />
+              <span>
+                একাউন্ট তৈরি সম্পন্ন হলে আপনি সরাসরি আপনার পূর্বের পেজে ফিরে যাবেন।
+              </span>
+            </div>
+          )}
 
           {/* এরর মেসেজ অ্যালার্ট */}
           {errorMessage && (
@@ -229,7 +246,7 @@ export default function SignUpPage() {
             <p className="text-xs text-slate-600">
               ইতিমধ্যে একাউন্ট আছে?{" "}
               <Link
-                href="/signin"
+                href={signinHref}
                 className="text-blue-600 font-bold hover:underline"
               >
                 এখানে সাইন ইন করুন
@@ -241,5 +258,19 @@ export default function SignUpPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <span className="loading loading-spinner loading-lg text-blue-600"></span>
+        </div>
+      }
+    >
+      <SignUpContent />
+    </Suspense>
   );
 }

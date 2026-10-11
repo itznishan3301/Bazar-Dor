@@ -124,13 +124,13 @@ export function AuthProvider({ children }) {
   };
 
   // গুগল দিয়ে সোশ্যাল লগইন (BetterAuth Google OAuth সরাসরি একাউন্ট চুজারে রিডাইরেক্ট)
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (callbackUrl = "/") => {
     setLoading(true);
     try {
       if (authClient?.signIn?.social) {
         const res = await authClient.signIn.social({
           provider: "google",
-          callbackURL: "/",
+          callbackURL: callbackUrl,
         });
         if (res?.data?.url) {
           window.location.href = res.data.url;
@@ -147,13 +147,13 @@ export function AuthProvider({ children }) {
   };
 
   // গিটহাব দিয়ে সোশ্যাল লগইন (BetterAuth GitHub OAuth সরাসরি রিডাইরেক্ট)
-  const loginWithGithub = async () => {
+  const loginWithGithub = async (callbackUrl = "/") => {
     setLoading(true);
     try {
       if (authClient?.signIn?.social) {
         const res = await authClient.signIn.social({
           provider: "github",
-          callbackURL: "/",
+          callbackURL: callbackUrl,
         });
         if (res?.data?.url) {
           window.location.href = res.data.url;

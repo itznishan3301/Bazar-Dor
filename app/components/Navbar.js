@@ -43,6 +43,16 @@ export default function Navbar() {
     }
   };
 
+  const signinHref =
+    pathname && pathname !== "/" && pathname !== "/signin" && pathname !== "/signup"
+      ? `/signin?callbackUrl=${encodeURIComponent(pathname)}`
+      : "/signin";
+
+  const signupHref =
+    pathname && pathname !== "/" && pathname !== "/signin" && pathname !== "/signup"
+      ? `/signup?callbackUrl=${encodeURIComponent(pathname)}`
+      : "/signup";
+
   // ক্যাটাগরি লিংক অ্যাক্টিভ কিনা চেক
   const isCategoryActive = (slug) => {
     return pathname === `/category/${slug}`;
@@ -97,13 +107,13 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link
-                  href="/signin"
+                  href={signinHref}
                   className="text-sm font-medium text-[var(--color-text-body)] hover:text-[var(--color-primary)] transition-colors"
                 >
                   সাইন ইন
                 </Link>
                 <Link
-                  href="/signup"
+                  href={signupHref}
                   className="btn btn-sm btn-primary rounded-full px-5"
                 >
                   সাইন আপ
@@ -199,14 +209,14 @@ export default function Navbar() {
               ) : (
                 <div className="flex gap-2">
                   <Link
-                    href="/signin"
+                    href={signinHref}
                     className="btn btn-sm btn-ghost flex-1"
                     onClick={() => setMobileOpen(false)}
                   >
                     সাইন ইন
                   </Link>
                   <Link
-                    href="/signup"
+                    href={signupHref}
                     className="btn btn-sm btn-primary rounded-full flex-1"
                     onClick={() => setMobileOpen(false)}
                   >
