@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light;
+}
+
+@theme inline {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-secondary: #059669;
+  --color-accent: #f59e0b;
+  --color-danger: #dc2626;
+  --color-success: #16a34a;
+  --color-muted: #6b7280;
+  --color-bg-light: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text-dark: #1e293b;
+  --color-text-body: #475569;
+  --color-text-light: #94a3b8;
+  --font-bangla: "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+}
+
+/* ============================================
+   বেজ স্টাইল
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-bangla);
+  background-color: #f8fafc;
+  color: var(--color-text-dark);
+  line-height: 1.7;
+}
+
+/* ============================================
+   কাস্টম স্ক্রলবার
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ============================================
+   প্রাইস টিকার অ্যানিমেশন
+   ============================================ */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-content {
+  display: inline-flex;
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.ticker-content:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   কার্ড হোভার ইফেক্ট
+   ============================================ */
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   স্কেলিটন লোডার
+   ============================================ */
+.skeleton-pulse {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: pulse-move 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-move {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================
+   ব্যাজ স্টাইল — দাম ওঠানামা
+   ============================================ */
+.badge-up {
+  background-color: #dcfce7;
+  color: #166534;
+  font-weight: 600;
+}
+
+.badge-down {
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+.badge-flat {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* ============================================
+   নেভবার অ্যাক্টিভ লিংক
+   ============================================ */
+.nav-link {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.nav-link.active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* ============================================
+   কন্টেইনার ইউটিলিটি
+   ============================================ */
+.container-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
