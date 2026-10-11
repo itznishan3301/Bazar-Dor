@@ -1,8 +1,9 @@
 import { MongoClient } from "mongodb";
 
-const uri =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://bazardor:S8TbSyMK%402hdBUU@bazardor.anxfedh.mongodb.net/bazardor?retryWrites=true&w=majority&appName=bazardor";
+const uri = process.env.MONGODB_URI || "";
+if (!uri && process.env.NODE_ENV === "production") {
+  console.warn("Warning: MONGODB_URI environment variable is not defined");
+}
 
 const options = {};
 

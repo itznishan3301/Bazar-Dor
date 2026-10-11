@@ -2,11 +2,12 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 
-const uri =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://bazardor:S8TbSyMK%402hdBUU@bazardor.anxfedh.mongodb.net/bazardor?retryWrites=true&w=majority&appName=bazardor";
+const uri = process.env.MONGODB_URI || "";
+if (!uri && process.env.NODE_ENV === "production") {
+  console.warn("Warning: MONGODB_URI environment variable is not defined");
+}
 
-const client = new MongoClient(uri);
+const client = new MongoClient(uri || "mongodb://localhost:27017");
 
 export const auth = betterAuth({
   database: mongodbAdapter(client.db(process.env.MONGODB_DB || "bazardor")),
