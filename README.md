@@ -7,7 +7,7 @@ A modern, high-performance, and responsive web application designed to track and
 ## 🚀 Live Demo & Repository
 
 - **Repository Link:** [https://github.com/itznishan3301/Bazar-Dor](https://github.com/itznishan3301/Bazar-Dor)
-- **Live Deployment:** [Deploy on Vercel / Cloudflare Pages / Netlify]
+- **Live Deployment:** [https://bazardor123.netlify.app/](https://bazardor123.netlify.app/)]
 
 ---
 
@@ -177,8 +177,3 @@ The application connects to the primary endpoint with automated multi-URL fallba
 - **Single Category:** `/categories/{slug}`
 
 ---
-
-## 📄 License & Attribution
-
-Developed for **Programming Hero Batch-14 Assignment-07 (BazarDor)**.  
-© 2026 BazarDor. All rights reserved.
