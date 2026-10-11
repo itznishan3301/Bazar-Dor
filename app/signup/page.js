@@ -81,19 +81,19 @@ export default function SignUpPage() {
     }
   };
 
-  // সোশ্যাল গিটহাব রেজিস্ট্রেশন/লগইন
+  // সোশ্যাল গিটহাব রেজিস্ট্রেশন/লগইন (BetterAuth দিয়ে সরাসরি গিটহাবে নিয়ে যাবে)
   const handleGithubAuth = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
       await loginWithGithub();
-      toast.success("গিটহাব দিয়ে সফলভাবে সংযুক্ত হয়েছেন!");
-      router.push("/");
+      // ব্রাউজার স্বয়ংক্রিয়ভাবে গিটহাবের একাউন্ট অথোরাইজেশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গিটহাব এরর:", err);
-      setErrorMessage("গিটহাব দিয়ে সংযোগ স্থাপন করা সম্ভব হয়নি।");
+      setErrorMessage(
+        "গিটহাব সার্ভারে রিডাইরেক্ট করা সম্ভব হয়নি। GitHub Developer Settings-এ Callback URL (http://localhost:3000/api/auth/callback/github) যুক্ত আছে কিনা যাচাই করুন।"
+      );
       toast.error("গিটহাব অথেনটিকেশন ব্যর্থ হয়েছে");
-    } finally {
       setSubmitting(false);
     }
   };

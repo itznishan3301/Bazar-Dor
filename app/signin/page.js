@@ -64,19 +64,19 @@ export default function SignInPage() {
     }
   };
 
-  // গিটহাব দিয়ে সোশ্যাল লগইন
+  // গিটহাব দিয়ে সোশ্যাল লগইন (সরাসরি গিটহাব অথেনটিকেশন স্ক্রিনে রিডাইরেক্ট করবে)
   const handleGithubLogin = async () => {
     try {
       setSubmitting(true);
       setErrorMessage("");
       await loginWithGithub();
-      toast.success("গিটহাব দিয়ে সফলভাবে লগইন হয়েছে!");
-      router.push("/");
+      // ব্রাউজার স্বয়ংক্রিয়ভাবে গিটহাবের একাউন্ট অথোরাইজেশন উইন্ডোতে চলে যাবে
     } catch (err) {
       console.error("গিটহাব লগইন এরর:", err);
-      setErrorMessage("গিটহাব দিয়ে সাইন ইন করা সম্ভব হয়নি।");
-      toast.error("গিটহাব সাইন ইন ব্যর্থ হয়েছে");
-    } finally {
+      setErrorMessage(
+        "গিটহাব একাউন্টে সংযোগ করা সম্ভব হয়নি। GitHub Developer Settings-এ Callback URL (http://localhost:3000/api/auth/callback/github) যুক্ত আছে কিনা যাচাই করুন।"
+      );
+      toast.error("গিটহাব সাইন ইন সংযোগ ব্যর্থ হয়েছে");
       setSubmitting(false);
     }
   };

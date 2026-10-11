@@ -146,29 +146,24 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // গিটহাব দিয়ে সোশ্যাল লগইন (MongoDB-তে রেকর্ড হবে)
+  // গিটহাব দিয়ে সোশ্যাল লগইন (BetterAuth GitHub OAuth সরাসরি রিডাইরেক্ট)
   const loginWithGithub = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/social", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      if (authClient?.signIn?.social) {
+        const res = await authClient.signIn.social({
           provider: "github",
-          displayName: "গিটহাব ডেভেলপার",
-          email: "developer@github.com",
-        }),
-      });
-
-      const data = await res.json();
-      const sessionData = data.user;
-
-      localStorage.setItem(
-        "bazardor_active_session",
-        JSON.stringify(sessionData)
-      );
-      setUser(sessionData);
-      return sessionData;
+          callbackURL: "/",
+        });
+        if (res?.data?.url) {
+          window.location.href = res.data.url;
+        }
+        return res;
+      }
+      throw new Error("BetterAuth client পাওয়া যায়নি");
+    } catch (err) {
+      console.error("গিটহাব অথেনটিকেশন এরর:", err);
+      throw err;
     } finally {
       setLoading(false);
     }
